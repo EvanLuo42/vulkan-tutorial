@@ -10,14 +10,25 @@
 constexpr uint32_t WIDTH = 800;
 constexpr uint32_t HEIGHT = 600;
 
-class Application {
-public:
+const std::vector validationLayers = {"VK_LAYER_KHRONOS_validation"};
+
+#ifdef NDEBUG
+constexpr bool enableValidationLayers = false;
+#else
+constexpr bool enableValidationLayers = true;
+#endif
+
+class Application
+{
+  public:
     void run();
-    ~Application() {
+    ~Application()
+    {
         glfwDestroyWindow(window);
         glfwTerminate();
     }
-private:
+
+  private:
     GLFWwindow *window = nullptr;
     vk::Instance vkInstance = nullptr;
     vk::raii::Context vkContext;
@@ -26,4 +37,6 @@ private:
     void initVulkan();
     void createInstance();
     void mainLoop() const;
+
+    bool checkValidationLayerSupport();
 };
